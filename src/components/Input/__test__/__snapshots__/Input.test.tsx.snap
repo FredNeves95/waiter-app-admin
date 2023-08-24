@@ -1,0 +1,3 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`<Input/> > Should match the snapshot 1`] = `"<div class=\\"sc-bcPKhP lpbPOv\\"><label class=\\"sc-grXZZQ jlbCzr\\">test<input type=\\"text\\" placeholder=\\"mocked placeholder\\" name=\\"test\\" error=\\"This field is required\\" class=\\"sc-dkjKgF kUCshw\\"></label><span class=\\"sc-hLclGa ibFrep\\"><img src=\\"/src/assets/images/info.svg\\" alt=\\"Info\\">This field is required</span></div>"`;

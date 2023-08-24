@@ -1,10 +1,10 @@
 import {  MouseEventHandler, ReactNode } from 'react';
 import * as S from './styles';
 
-interface ButtonProps {
+export interface ButtonProps {
   buttonType?: 'primary' | 'secondary';
   type?: 'button' | 'submit' | 'reset';
-  children: ReactNode;
+  children?: ReactNode;
   disabled?: boolean;
   onClick?: MouseEventHandler<HTMLButtonElement>
 }

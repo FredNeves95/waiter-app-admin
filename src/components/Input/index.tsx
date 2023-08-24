@@ -3,13 +3,13 @@ import info from '../../assets/images/info.svg';
 
 import * as S from './styles';
 
-interface InputProps {
+export interface InputProps {
   type?: React.HTMLInputTypeAttribute;
   placeholder?: string;
-  label: string;
-  name: string;
+  label?: string;
+  name?: string;
   error?: string;
-  onChange: ChangeEventHandler<HTMLInputElement>
+  onChange?: ChangeEventHandler<HTMLInputElement>
 }
 
 export const Input = ({type = 'text', placeholder, label, name, error, onChange}: InputProps) => {
@@ -17,7 +17,7 @@ export const Input = ({type = 'text', placeholder, label, name, error, onChange}
     <S.Container>
       <S.Label>
         {label}
-        <S.Input type={type} placeholder={placeholder} name={name} onChange={onChange} error={!!error}/>
+        <S.Input type={type} placeholder={placeholder} name={name} onChange={onChange} error={error}/>
       </S.Label>
       {
         error && (

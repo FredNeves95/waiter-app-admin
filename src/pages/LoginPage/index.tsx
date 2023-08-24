@@ -10,9 +10,7 @@ export const LoginPage = () => {
   const [password, setPassword] = useState('');
 
   const {errors, setError, removeError, getErrorMessageByFieldName} = useErrors();
-
   const isDisabled = !email || !password || !!errors.length;
-
   const handleEmailChange = (event: {target: HTMLInputElement}) => {
     setEmail(event.target.value);
     if (event.target.value && !isValidEmail(event.target.value)) {
@@ -24,7 +22,7 @@ export const LoginPage = () => {
 
   const handlePasswordChange = (event: {target: HTMLInputElement}) => {
     setPassword(event.target.value);
-    if (event.target.value && password.length < 8) {
+    if (event.target.value && event.target.value.length < 8) {
       setError({ field: 'password', message: 'Senha incorreta. Tente novamente.' });
     } else {
       removeError('password');
@@ -32,8 +30,10 @@ export const LoginPage = () => {
   };
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    console.log({errors});
     event.preventDefault();
+    if(isDisabled){
+      return;
+    }
     console.log({email, password});
   };
 

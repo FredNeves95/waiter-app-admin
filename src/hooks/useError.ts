@@ -12,7 +12,7 @@ export function useErrors() {
     const errorAlreadyExists = errors.find((error) => error.field === field);
 
     if (errorAlreadyExists) {
-      return;
+      return null;
     }
 
     setErrors((prevState) => [
@@ -28,7 +28,8 @@ export function useErrors() {
   };
 
   const  getErrorMessageByFieldName = (fieldName: string) => {
-    return errors.find((error) => error.field === fieldName)?.message;
+    const errorMessage = errors.find((error) => error.field === fieldName)?.message;
+    return  errorMessage ?? '';
   };
 
   return {

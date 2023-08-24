@@ -13,7 +13,7 @@ export const Label = styled.label`
   color: ${(props) => props.theme.colors.gray[500]}
 `;
 
-export const Input = styled.input<{error: boolean}>`
+export const Input = styled.input<{error?: string}>`
   padding: 0 16px;
   height: 56px;
   border: 1px solid ${(props) => props.error ? props.theme.colors.red.medium : props.theme.colors.gray[200]};

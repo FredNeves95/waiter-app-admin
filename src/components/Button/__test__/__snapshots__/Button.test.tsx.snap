@@ -1,0 +1,5 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`<Button/> > Should match the snapshot 1`] = `"<button type=\\"button\\" button-type=\\"primary\\" class=\\"sc-bcPKhP bikja-d\\"></button>"`;
+
+exports[`<Button/> > Should match the snapshot 2`] = `"<button type=\\"button\\" button-type=\\"secondary\\" class=\\"sc-bcPKhP bZFRJa\\"></button>"`;
