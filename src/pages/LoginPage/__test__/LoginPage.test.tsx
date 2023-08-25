@@ -1,15 +1,31 @@
-import {afterEach, describe, expect, it, vi} from 'vitest';
+import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest';
 import {LoginPage} from '../index';
 import { mountWithTheme } from '../../../utils/helpers/test';
+import { BrowserRouter, useNavigate } from 'react-router-dom';
 
 
 describe('<LoginPage/>', () => {
+  beforeEach(() => {
+    vi.mock('react-router-dom', async () => {
+      const navigate = vi.fn();
+      const actual: object = await vi.importActual('react-router-dom');
+      return {
+        ...actual,
+        useNavigate: () => navigate
+      };
+    });
+  });
+
   afterEach(() => {
     vi.clearAllMocks();
   });
 
   const renderComponent = () =>
-    mountWithTheme(<LoginPage/>);
+    mountWithTheme(
+      <BrowserRouter>
+        <LoginPage/>
+      </BrowserRouter>
+    );
 
   it('Should match the snapshot', () => {
     const loginPage = renderComponent();
@@ -35,7 +51,7 @@ describe('<LoginPage/>', () => {
   it('Should not execute handleSubmit after clicking the button if there is no valid email', () => {
     const loginPage = renderComponent();
 
-    const handleSubmitSpy = vi.spyOn(console, 'log');
+    const navigate = useNavigate();
     const button = loginPage.find('button');
 
     const emailInput = loginPage.find('input[type="email"]');
@@ -46,13 +62,14 @@ describe('<LoginPage/>', () => {
 
     button.simulate('submit');
 
-    expect(handleSubmitSpy).not.toHaveBeenCalled();
+    expect(navigate).not.toHaveBeenCalled();
   });
 
   it('Should not execute handleSubmit after clicking the button if there is valid email but password with less than 8 characters', () => {
     const loginPage = renderComponent();
 
-    const handleSubmitSpy = vi.spyOn(console, 'log');
+    const navigate = useNavigate();
+
     const button = loginPage.find('button');
 
     const emailInput = loginPage.find('input[type="email"]');
@@ -63,14 +80,13 @@ describe('<LoginPage/>', () => {
 
     button.simulate('submit');
 
-    expect(handleSubmitSpy).not.toHaveBeenCalled();
+    expect(navigate).not.toHaveBeenCalled();
   });
   it('Should execute handleSubmit after clicking the button if there is valid email and password', () => {
+
     const loginPage = renderComponent();
-
-    const handleSubmitSpy = vi.spyOn(console, 'log');
     const button = loginPage.find('button');
-
+    const navigate = useNavigate();
     const emailInput = loginPage.find('input[type="email"]');
     const passwordInput = loginPage.find('input[type="password"]');
 
@@ -78,7 +94,6 @@ describe('<LoginPage/>', () => {
     passwordInput.simulate('change', {target: {name: 'password', value:'123456789'}});
 
     button.simulate('submit');
-
-    expect(handleSubmitSpy).toHaveBeenCalled();
+    expect(navigate).toHaveBeenCalledWith('/home');
   });
 });

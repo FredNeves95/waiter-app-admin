@@ -4,10 +4,12 @@ import { Input } from '../../components/Input';
 import * as S from './styles';
 import { useErrors } from '../../hooks/useError';
 import { isValidEmail } from '../../utils/functions/validations';
+import { useNavigate } from 'react-router-dom';
 
 export const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
   const {errors, setError, removeError, getErrorMessageByFieldName} = useErrors();
   const isDisabled = !email || !password || !!errors.length;
@@ -34,7 +36,7 @@ export const LoginPage = () => {
     if(isDisabled){
       return;
     }
-    console.log({email, password});
+    navigate('/home');
   };
 
   return (
