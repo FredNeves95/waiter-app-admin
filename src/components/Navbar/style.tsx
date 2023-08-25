@@ -35,7 +35,8 @@ export const NavbarList = styled.ul`
   gap: 64px;
 `;
 
-export const NavbarListItem = styled.li<{isbreakpoint: 'true' | 'false'}>`
+export const NavbarListItem = styled.li<{isbreakpoint: string}>`
+  height: 54px;
   ${(props) => {
     return props.isbreakpoint === 'true' ?
       css`
@@ -46,7 +47,7 @@ export const NavbarListItem = styled.li<{isbreakpoint: 'true' | 'false'}>`
 }
 `;
 
-export const NavbarLink = styled(Link)`
+export const NavbarLink = styled(Link)<{isactive: string}>`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -58,10 +59,29 @@ export const NavbarLink = styled(Link)`
   transition: all 0.1s linear;
 
   &:hover{
+    ${(props) => {
+    return props.isactive === 'false' ?
+      css`
     color: ${(props) => props.theme.colors.red.light};
+    `
+      : null;
+  }}
   }
   .icon-class {
     width: 20px;
     height: 18px;
+  }
+
+  ${(props) => {
+    return props.isactive === 'true' ?
+      css`
+    color: ${(props) => props.theme.colors.red.medium};
+    `
+      : null;
+  }}
+
+  hr {
+    border: 1.5px solid ${(props) => props.theme.colors.red.medium};
+    width: 12px;
   }
 `;

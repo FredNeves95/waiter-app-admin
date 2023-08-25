@@ -6,7 +6,7 @@ interface PageWithNavbarProps {
   children?: ReactNode;
 }
 
-export const PageWithNavbar = ({children}: PageWithNavbarProps) => {
+export const PageWithNavbar = ({ children }: PageWithNavbarProps) => {
   return (
     <S.Container>
       <Navbar/>

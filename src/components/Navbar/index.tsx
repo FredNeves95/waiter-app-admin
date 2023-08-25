@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode, useContext } from 'react';
 import { HomeIcon } from '../Icons/HomeIcon';
 import * as S from './style';
 import { HistoryIcon } from '../Icons/HistoryIcon';
@@ -6,19 +6,12 @@ import { MenuIcon } from '../Icons/MenuIcon';
 import { UsersIcon } from '../Icons/UsersIcon';
 import { ProfileIcon } from '../Icons/ProfileIcon';
 import { LogoutIcon } from '../Icons/LogoutIcon';
-
-
-// import homeIcon from '../../assets/images/home-icon.svg';
-// import historyIcon from '../../assets/images/history-icon.svg';
-// import menuIcon from '../../assets/images/menu-icon.svg';
-// import usersIcon from '../../assets/images/users-icon.svg';
-// import profileIcon from '../../assets/images/profile-icon.svg';
-// import logoutIcon from '../../assets/images/logout-icon.svg';
-
+import { InternalPagesLinks, InternalPagesTitles } from '../../utils/types/internalPages';
+import { ActivePageContext, ActivePageContextProps } from '../../contexts/ActivePageContext';
 
 interface NavbarRoutes {
-  link: '/home' | '/history' | '/menu' | '/users' | '/profile' | '/logout';
-  title: 'Home' | 'Histórico' | 'Cardápio' | 'Usuários' | 'Meu Perfil' | 'Sair';
+  link: InternalPagesLinks;
+  title: InternalPagesTitles
   icon: ReactNode
 }
 
@@ -56,6 +49,9 @@ const navbarRoutes: NavbarRoutes[] = [
 ];
 
 export const Navbar = () => {
+
+  const { activePage, handleActivePage } = useContext(ActivePageContext) as ActivePageContextProps;
+
   return (
     <aside>
       <S.NavbarContainer>
@@ -65,10 +61,16 @@ export const Navbar = () => {
         <S.NavbarList>
           {
             navbarRoutes.map(route => (
-              <S.NavbarListItem key={route.link} isbreakpoint={route.link === '/profile' ? 'true' : 'false'}>
-                <S.NavbarLink to={route.link}>
+              <S.NavbarListItem
+                key={route.link}
+                isbreakpoint={(route.link === '/profile').toString()}
+              >
+                <S.NavbarLink to={route.link} onClick={() => handleActivePage(route.link)} isactive={(activePage === route.link).toString()}>
                   {route.icon}
                   {route.title}
+                  {
+                    activePage === route.link && <hr/>
+                  }
                 </S.NavbarLink>
               </S.NavbarListItem>
             ))
