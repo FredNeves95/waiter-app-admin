@@ -9,7 +9,7 @@ export interface ButtonProps {
   onClick?: MouseEventHandler<HTMLButtonElement>
 }
 
-export const Button = ({type = 'button', buttonType = 'primary', children, disabled = false, onClick }: ButtonProps) => {
+export const Button = ({ type = 'button', buttonType = 'primary', children, disabled = false, onClick }: ButtonProps) => {
   return (
     <S.Button type={type} disabled={disabled} button-type={buttonType} onClick={onClick}>
       {children}

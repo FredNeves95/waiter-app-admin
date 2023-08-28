@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 import { Navbar } from '../../components/Navbar';
 import * as S from './styles';
+import { Header } from '../../components/Header';
 
 interface PageWithNavbarProps {
   children?: ReactNode;
@@ -11,13 +12,7 @@ export const PageWithNavbar = ({ children }: PageWithNavbarProps) => {
     <S.Container>
       <Navbar/>
       <S.PageContainer>
-        <header>
-          <>
-            {/* <img src={homeIcon}/> */}
-            <h4>Home</h4>
-          </>
-          <p>Acompanhe os pedidos dos clientes</p>
-        </header>
+        <Header/>
         {children}
       </S.PageContainer>
     </S.Container>

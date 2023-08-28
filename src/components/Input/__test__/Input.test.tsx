@@ -1,5 +1,5 @@
-import {beforeEach, describe, expect, it, vi} from 'vitest';
-import {Input, InputProps} from '../index';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { Input, InputProps } from '../index';
 import { mountWithTheme } from '../../../utils/helpers/test';
 
 
@@ -32,7 +32,7 @@ describe('<Input/>', () => {
   });
 
   it('Should render input with placeholder received from props', () => {
-    const input = renderComponent({placeholder: 'mocked placeholder'});
+    const input = renderComponent({ placeholder: 'mocked placeholder' });
     expect(input.find('input').prop('placeholder')).toEqual('mocked placeholder');
   });
 
@@ -43,13 +43,13 @@ describe('<Input/>', () => {
 
     expect(handleChange).not.toHaveBeenCalled();
 
-    textInput.simulate('change', {target: {name: 'test', value:'mocked typing'}});
+    textInput.simulate('change', { target: { name: 'test', value:'mocked typing' } });
 
     expect(handleChange).toHaveBeenCalled();
   });
 
   it('Should display error message when error is received from props', () => {
-    const input = renderComponent({error: 'This field is required'});
+    const input = renderComponent({ error: 'This field is required' });
     expect(input.find('span').text()).toEqual('This field is required');
   });
 });

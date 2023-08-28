@@ -1,52 +1,7 @@
-import { ReactNode, useContext } from 'react';
-import { HomeIcon } from '../Icons/HomeIcon';
+import { useContext } from 'react';
 import * as S from './style';
-import { HistoryIcon } from '../Icons/HistoryIcon';
-import { MenuIcon } from '../Icons/MenuIcon';
-import { UsersIcon } from '../Icons/UsersIcon';
-import { ProfileIcon } from '../Icons/ProfileIcon';
-import { LogoutIcon } from '../Icons/LogoutIcon';
-import { InternalPagesLinks, InternalPagesTitles } from '../../utils/types/internalPages';
 import { ActivePageContext, ActivePageContextProps } from '../../contexts/ActivePageContext';
-
-interface NavbarRoutes {
-  link: InternalPagesLinks;
-  title: InternalPagesTitles
-  icon: ReactNode
-}
-
-const navbarRoutes: NavbarRoutes[] = [
-  {
-    link: '/home',
-    title: 'Home',
-    icon: <HomeIcon className='icon-class'/>
-  },
-  {
-    link: '/history',
-    title: 'Histórico',
-    icon: <HistoryIcon className='icon-class'/>
-  },
-  {
-    link: '/menu',
-    title: 'Cardápio',
-    icon: <MenuIcon className='icon-class'/>
-  },
-  {
-    link: '/users',
-    title: 'Usuários',
-    icon: <UsersIcon className='icon-class'/>
-  },
-  {
-    link: '/profile',
-    title: 'Meu Perfil',
-    icon: <ProfileIcon className='icon-class'/>
-  },
-  {
-    link: '/logout',
-    title: 'Sair',
-    icon: <LogoutIcon className='icon-class'/>
-  },
-];
+import { navbarRoutes } from '../../utils/constants/navbarRoutes';
 
 export const Navbar = () => {
 

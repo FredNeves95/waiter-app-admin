@@ -4,4 +4,6 @@ export const Container = styled.div`
   display: flex;
 `;
 
-export const PageContainer = styled.div``;
+export const PageContainer = styled.div`
+  width: 90%;
+`;

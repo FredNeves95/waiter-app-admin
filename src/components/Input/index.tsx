@@ -12,7 +12,7 @@ export interface InputProps {
   onChange?: ChangeEventHandler<HTMLInputElement>
 }
 
-export const Input = ({type = 'text', placeholder, label, name, error, onChange}: InputProps) => {
+export const Input = ({ type = 'text', placeholder, label, name, error, onChange }: InputProps) => {
   return (
     <S.Container>
       <S.Label>
