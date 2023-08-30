@@ -6,4 +6,5 @@ export const Container = styled.div`
 
 export const PageContainer = styled.div`
   width: 90%;
+  padding: 0 36px;
 `;
