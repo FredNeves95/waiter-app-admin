@@ -1,6 +1,17 @@
 import styled, { css } from 'styled-components';
+import { keyframes } from 'styled-components';
 
-export const Button = styled.button<{'button-type': 'primary' | 'secondary'}>`
+const buttonLoadingSpinner = keyframes`
+  from {
+      transform: rotate(0turn);
+  }
+
+  to {
+      transform: rotate(1turn);
+  }
+`;
+
+export const Button = styled.button<{'button-type': 'primary' | 'secondary', 'loading': string}>`
   padding: 14px 28px;
   font-size: 16px;
   height: 44px;
@@ -9,7 +20,6 @@ export const Button = styled.button<{'button-type': 'primary' | 'secondary'}>`
   justify-content: center;
   font-weight: 600;
   transition: all 0.1s linear;
-
 
   ${(props) => {
     switch (props['button-type']) {
@@ -45,4 +55,13 @@ export const Button = styled.button<{'button-type': 'primary' | 'secondary'}>`
         }
       `;
     }}}
+
+.action-icon {
+    ${
+  (props) => props.loading === 'true' &&
+        css`
+      animation: ${buttonLoadingSpinner} 1s ease infinite;
+      `
+}
+}
 `;

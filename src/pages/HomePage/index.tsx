@@ -1,15 +1,12 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect } from 'react';
 import * as S from './styles';
 import { ModalContext, ModalContextProps } from '../../contexts/ModalContext';
 import { OrderContext, OrderContextProps } from '../../contexts/OrderContext';
 import { Order, OrderStatus } from '../../utils/types/orders';
-import { api } from '../../api/axios';
-
-
 interface TrailSteps {
   emoji: string;
   title: string;
-  status: OrderStatus
+  status: OrderStatus;
 }
 
 const trailSteps: TrailSteps[] = [
@@ -32,23 +29,11 @@ const trailSteps: TrailSteps[] = [
 
 export const HomePage = () => {
   const { openModal, handleModalType } = useContext(ModalContext) as ModalContextProps;
-  const { handleCurrentOrder } = useContext(OrderContext) as OrderContextProps;
-
-  const [orders, setOrders] = useState<Order[] | undefined>();
-
-  const getOrders = async () => {
-    try {
-      const res = await api.get('/orders');
-      setOrders(res.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const { handleCurrentOrder, getOrders, orders } = useContext(OrderContext) as OrderContextProps;
 
   useEffect(() => {
     getOrders();
   },[]);
-
 
   const handleClick = (order: Order) => {
     handleModalType('current-order');
@@ -61,9 +46,8 @@ export const HomePage = () => {
       {
         trailSteps.map(step => {
           const stepOrders = orders?.filter(order => order.status === step.status);
-
           return (
-            <S.OrderTrailStep key={step.title}>
+            <S.OrderTrailStep key={step.title} id={step.status}>
               <S.TrailStepTitle>
                 <span className='emoji'>{step.emoji}</span>
                 <span className='title'>{step.title}</span>

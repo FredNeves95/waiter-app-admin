@@ -76,3 +76,10 @@ export const TotalSection = styled.span`
     font-weight: 600;
   }
 `;
+
+export const ActionsFooter = styled.footer`
+  margin-top: 32px 0px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;

@@ -1,18 +1,32 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { OrderContext, OrderContextProps } from '../../../contexts/OrderContext';
 
 import * as S from './styles';
 import { formatToBRCurrency } from '../../../utils/helpers/format';
+import { Button } from '../../Button';
+import { api } from '../../../api/axios';
+import { ModalContext, ModalContextProps } from '../../../contexts/ModalContext';
+import { FloatMessageContext, FloatMessageContextProps } from '../../../contexts/FloatMessageContext';
+
+const initialState = {
+  action: '',
+  isLoading: false
+};
 
 export const CurrentOrderModal = () => {
-  const { currentOrder } = useContext(OrderContext) as OrderContextProps;
+  const { closeModal } = useContext(ModalContext) as ModalContextProps;
+
+  const { currentOrder, refetchOrders } = useContext(OrderContext) as OrderContextProps;
+  const { handleFloatingMessageData, handleFloatingMessageVisibility } = useContext(FloatMessageContext) as FloatMessageContextProps;
+
+  const [loadingAction, setLoadingAction] = useState(initialState);
 
   const renderStatus = () => {
-    if(currentOrder?.status === 'awaiting'){
+    if(currentOrder?.status === 'WAITING'){
       return '🕒️ Fila de espera';
     }
 
-    if(currentOrder?.status === 'in-progress'){
+    if(currentOrder?.status === 'IN_PRODUCTION'){
       return '👩‍🍳 Em progresso';
     }
 
@@ -27,6 +41,62 @@ export const CurrentOrderModal = () => {
     return total;
   };
 
+  const handleCancelOrder = async () => {
+    try {
+      setLoadingAction({ action: 'cancel', isLoading: true });
+      await api.patch(`/orders/${currentOrder?._id}`, {
+        status: 'CANCELED'
+      });
+      handleFloatingMessageData({ message: `O pedido da mesa ${currentOrder?.table} foi cancelado com sucesso` });
+      await refetchOrders();
+    } catch (error) {
+      handleFloatingMessageData({ status:'error', message: `Ocorreu um erro ao cancelar o pedido da mesa ${currentOrder?.table}` });
+    } finally{
+      setLoadingAction(initialState);
+      handleFloatingMessageVisibility(true);
+      closeModal();
+    }
+  };
+
+  const handleNextStep = async () => {
+    let nextStatus = '';
+    let floatMessage = '';
+    if(currentOrder?.status === 'WAITING'){
+      nextStatus = 'IN_PRODUCTION';
+      floatMessage = `O preparo da mesa ${currentOrder.table} iniciou.`;
+    }
+
+    if(currentOrder?.status === 'IN_PRODUCTION'){
+      nextStatus = 'DONE';
+      floatMessage = `O pedido da mesa ${currentOrder.table} foi finalizado.`;
+    }
+
+    try {
+      setLoadingAction({ action: 'next_step', isLoading: true });
+      await api.patch(`/orders/${currentOrder?._id}`, {
+        status: nextStatus
+      });
+      handleFloatingMessageData({ message: floatMessage });
+      await refetchOrders();
+    } catch (error) {
+      handleFloatingMessageData({ status:'error', message: `Ocorreu um erro ao atualizar o pedido da mesa ${currentOrder?.table}` });
+    } finally{
+      setLoadingAction(initialState);
+      handleFloatingMessageVisibility(true);
+      closeModal();
+    }
+  };
+
+  const renderNextStepButtonText = () => {
+    if(currentOrder?.status === 'WAITING'){
+      return 'Iniciar Preparo';
+    }
+
+    if(currentOrder?.status === 'IN_PRODUCTION'){
+      return 'Concluir Pedido';
+    }
+  };
+
   return(
     <S.Container>
       <S.StatusSection>
@@ -38,7 +108,7 @@ export const CurrentOrderModal = () => {
         {
           currentOrder?.products.map((item, index) => (
             <S.Item key={index}>
-              <img src='https://images.unsplash.com/photo-1513104890138-7c749659a591?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cGl6emF8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60' alt={item.product.name}/>
+              <img src={`http://localhost:3001/uploads/${item.product.imagePath}`} alt={item.product.name}/>
               <span className='item-quantity'>
                 {item.quantity}x
               </span>
@@ -60,6 +130,22 @@ export const CurrentOrderModal = () => {
           {formatToBRCurrency.format(getTotal())}
         </span>
       </S.TotalSection>
+      { currentOrder?.status !== 'DONE' && <S.ActionsFooter>
+        <Button
+          buttonType='secondary'
+          onClick={handleCancelOrder}
+          isLoading={loadingAction.action === 'cancel' && loadingAction.isLoading}
+        >
+          Cancelar Pedido
+        </Button>
+        <Button
+          onClick={handleNextStep}
+          isLoading={loadingAction.action === 'next_step' && loadingAction.isLoading}
+        >
+          {renderNextStepButtonText()}
+        </Button>
+
+      </S.ActionsFooter>}
     </S.Container>
   );
 };
